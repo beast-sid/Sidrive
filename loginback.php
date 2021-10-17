@@ -1,0 +1,40 @@
+<?php
+include('sqlconnection.php');
+if(isset($_POST['submit']))
+{
+    $email=$_POST['mail'];
+    $pass=$_POST['pass'];
+    $query="select * from signup";
+    $result=mysqli_query($conn,$query);
+    $f=0;
+    if($result)
+    {
+        while($row=mysqli_fetch_array($result,MYSQLI_NUM))
+        {
+            if($row[0]==$email&&$row[1]==$pass)
+            {
+                $f=1;
+                session_start();
+                $_SESSION['email']=$email;
+                $_SESSION['pass']=$pass;
+                ?>
+                <Script>
+                alert("Logged in Successfully");
+                window.location.href="uploadfront.php";
+                </Script>
+                <?php
+                break;
+            }
+        }
+        if(!$f)
+        {
+            ?>
+            <Script>
+            alert("Email id or password is incorrect");
+            window.location.href='loginfront.php';
+            </Script>
+            <?php
+        }
+    }
+}
+?>
